@@ -30,24 +30,25 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-				<cloudHub2Deployment>
-						<uri>https://anypoint.mulesoft.com</uri>
-						<muleVersion>4.4.0</muleVersion>
-						<username>1130</username>
-						<password>Sindhu@987</password>
-						<applicationName>cicd1</applicationName>
-						<environment>Sandbox</environment>
-						<workers>1</workers>
-						<workerType>MICRO</workerType>
-						<objectStoreV2>true</objectStoreV2>
-					</cloudHub2Deployment>
-					<sharedLibraries>
-						<sharedLibrary>
-							<groupId>com.h2database</groupId>
-							<artifactId>h2</artifactId>
-						</sharedLibrary>
-					</sharedLibraries>
-				</configuration>
+    <deploymentStrategy>
+        <target>CloudHub2</target>
+        <uri>https://anypoint.mulesoft.com</uri>
+        <muleVersion>${app.runtime}</muleVersion>
+        <username>${env.ANYPOINT_USERNAME}</username>
+        <password>${env.ANYPOINT_PASSWORD}</password>
+        <applicationName>cicd1</applicationName>
+        <environment>Sandbox</environment>
+        <workers>1</workers>
+        <workerType>MICRO</workerType>
+        <objectStoreV2>true</objectStoreV2>
+    </deploymentStrategy>
+    <sharedLibraries>
+        <sharedLibrary>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </sharedLibrary>
+    </sharedLibraries>
+</configuration>
 			</plugin>
 		</plugins>
 	</build>
