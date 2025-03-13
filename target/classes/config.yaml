@@ -6,3 +6,7 @@ aws:
     queues:
       book_purchase: "arn:aws:sqs:eu-north-1:843981437160:Book_Purchase"
       book_restock: "arn:aws:sqs:eu-north-1:843981437160:Book_Restock"
+config:
+  anypoint:
+    username: "${anypoint.username}"
+    password: "${anypoint.password}"
