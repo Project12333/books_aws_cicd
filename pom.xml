@@ -16,8 +16,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <app.runtime>4.7.0</app.runtime>
-        <mule.maven.plugin.version>4.7.0</mule.maven.plugin.version>  <!-- Updated Mule Plugin Version -->
-
+        <mule.maven.plugin.version>4.7.0</mule.maven.plugin.version> <!-- Ensure this version exists -->
+        
         <!-- Using Environment Variables for Secure Authentication -->
         <anypoint.username>${env.ANYPOINT_USERNAME}</anypoint.username>
         <anypoint.password>${env.ANYPOINT_PASSWORD}</anypoint.password>
@@ -33,7 +33,7 @@
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
-                <version>${mule.maven.plugin.version}</version>  <!-- Use the property for versioning -->
+                <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <cloudhub2Deployment>
@@ -41,7 +41,7 @@
                         <provider>MC</provider>
                         <environment>Sandbox</environment>
                         <target>Cloudhub-US-East-1</target>
-                        <muleVersion>${app.runtime}</muleVersion>  <!-- Reference property -->
+                        <muleVersion>${app.runtime}</muleVersion>
                         <applicationName>book_restock_aws_2002</applicationName>
                         <replicas>1</replicas>
                         <vCores>1</vCores>
@@ -78,7 +78,6 @@
     </dependencies>
 
     <repositories>
-        <!-- Mulesoft Repository for Dependencies -->
         <repository>
             <id>mulesoft-releases</id>
             <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
@@ -94,5 +93,16 @@
             <layout>default</layout>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-plugin-releases</id>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>mulesoft-plugin-snapshots</id>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
