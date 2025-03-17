@@ -16,7 +16,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <app.runtime>4.7.0</app.runtime>
-        <mule.maven.plugin.version>3.7.1</mule.maven.plugin.version>
+        <mule.maven.plugin.version>3.8.0</mule.maven.plugin.version>
 
         <!-- Deployment Properties -->
         <environment>Sandbox</environment>
@@ -51,7 +51,7 @@
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
-                <version>3.9.2</version>
+                <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <cloudhub2Deployment>
@@ -141,6 +141,12 @@
             <url>https://repository.mulesoft.org/releases/</url>
             <layout>default</layout>
         </repository>
+              <repository>
+        <id>mulesoft-public</id>
+        <name>MuleSoft Public Repository</name>
+        <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        <layout>default</layout>
+    </repository>
     </repositories>
 
     <pluginRepositories>
@@ -153,6 +159,11 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
+             <pluginRepository>
+        <id>mulesoft-public</id>
+        <name>MuleSoft Public Repository</name>
+        <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+    </pluginRepository>
     </pluginRepositories>
 
 </project>
