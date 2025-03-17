@@ -41,8 +41,8 @@
                         <workerType>MICRO</workerType>
                         <objectStoreV2>true</objectStoreV2> 
                         <provider>
-                            <username>1130</username>
-                            <password>Sindhu@987</password>
+                            <username>${env.ANYPOINT_USERNAME}</username>
+                            <password>${env.ANYPOINT_PASSWORD}</password>
                         </provider>         
                     </cloudHub2Deployment>
                 </configuration>
