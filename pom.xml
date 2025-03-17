@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mycompany</groupId>
     <artifactId>book-restocking-aws</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>mule-application</packaging>
 
     <name>book-restocking-aws</name>
@@ -15,21 +14,40 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <app.runtime>4.7.0</app.runtime>
-        <mule.maven.plugin.version>4.7.0</mule.maven.plugin.version> <!-- Ensure this version exists -->
-        
-        <!-- Using Environment Variables for Secure Authentication -->
-        <anypoint.username>${env.ANYPOINT_USERNAME}</anypoint.username>
-        <anypoint.password>${env.ANYPOINT_PASSWORD}</anypoint.password>
+        <mule.maven.plugin.version>3.7.1</mule.maven.plugin.version>
+
+        <!-- Deployment Properties -->
+        <environment>Sandbox</environment>
+        <targetName>CloudHub2</targetName>
+        <muleVersion>${app.runtime}</muleVersion>
+        <user>${env.ANYPOINT_USERNAME}</user>
+        <pass>${env.ANYPOINT_PASSWORD}</pass>
+        <appName>cicd1</appName>
+        <publicURL>your-public-url</publicURL>
     </properties>
+
+    <!-- Distribution Management for Deployment -->
+    <distributionManagement>
+        <repository>
+            <id>Repository</id>
+            <name>Corporate Repository</name>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/ORGANIZATION_ID/maven</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>
+            <!-- Clean Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
             </plugin>
+
+            <!-- Mule Maven Plugin for Deployment -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -39,13 +57,30 @@
                     <cloudhub2Deployment>
                         <uri>https://anypoint.mulesoft.com</uri>
                         <provider>MC</provider>
-                        <environment>Sandbox</environment>
-                        <target>Cloudhub-US-East-1</target>
-                        <muleVersion>${app.runtime}</muleVersion>
-                        <applicationName>book_restock_aws_2002</applicationName>
+                        <environment>${environment}</environment>
+                        <target>${targetName}</target>
+                        <muleVersion>${muleVersion}</muleVersion>
+                        <username>${user}</username>
+                        <password>${pass}</password>
+                        <applicationName>${appName}</applicationName>
                         <replicas>1</replicas>
                         <vCores>1</vCores>
+                        <deploymentSettings>
+                            <http>
+                                <inbound>
+                                    <publicUrl>${publicURL}</publicUrl>
+                                    <forwardSslSession>true</forwardSslSession>
+                                    <lastMileSecurity>true</lastMileSecurity>
+                                </inbound>
+                            </http>
+                        </deploymentSettings>
                     </cloudhub2Deployment>
+                    <sharedLibraries>
+                        <sharedLibrary>
+                            <groupId>com.h2database</groupId>
+                            <artifactId>h2</artifactId>
+                        </sharedLibrary>
+                    </sharedLibraries>
                 </configuration>
             </plugin>
         </plugins>
@@ -60,14 +95,20 @@
         </dependency>
         <dependency>
             <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-db-connector</artifactId>
-            <version>1.14.10</version>
+            <artifactId>mule-sockets-connector</artifactId>
+            <version>1.2.4</version>
             <classifier>mule-plugin</classifier>
         </dependency>
         <dependency>
             <groupId>com.mulesoft.connectors</groupId>
             <artifactId>mule-amazon-sqs-connector</artifactId>
             <version>5.11.14</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-db-connector</artifactId>
+            <version>1.14.10</version>
             <classifier>mule-plugin</classifier>
         </dependency>
         <dependency>
@@ -79,29 +120,28 @@
 
     <repositories>
         <repository>
-            <id>mulesoft-releases</id>
-            <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
-        </repository>
-        <repository>
-            <id>mulesoft-snapshots</id>
-            <url>https://repository.mulesoft.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
             <id>anypoint-exchange-v3</id>
             <name>Anypoint Exchange</name>
             <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>https://repository.mulesoft.org/releases/</url>
             <layout>default</layout>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
-            <id>mulesoft-plugin-releases</id>
-            <url>https://repository.mulesoft.org/nexus/content/repositories/releases/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>mulesoft-plugin-snapshots</id>
-            <url>https://repository.mulesoft.org/nexus/content/repositories/snapshots/</url>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <layout>default</layout>
+            <url>https://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 
